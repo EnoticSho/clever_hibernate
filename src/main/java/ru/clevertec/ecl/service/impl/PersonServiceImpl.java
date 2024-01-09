@@ -13,6 +13,7 @@ import ru.clevertec.ecl.mapper.HouseMapper;
 import ru.clevertec.ecl.mapper.PersonMapper;
 import ru.clevertec.ecl.service.PersonService;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -44,7 +45,7 @@ public class PersonServiceImpl implements PersonService {
         Person person = personDao.findByUuid(uuid)
                 .orElseThrow(() -> new ResourceNotFoundException(uuid, HouseInfoDto.class));
         Person merge = personMapper.merge(person, personDto);
-        person.setUpdateDate(Instant.now());
+        person.setUpdateDate(Timestamp.from(Instant.now()));
         return personDao.update(merge).getUuid();
     }
 
@@ -52,7 +53,7 @@ public class PersonServiceImpl implements PersonService {
     public UUID create(PersonDto personDto) {
         Person person = personMapper.toPerson(personDto);
         person.setUuid(UUID.randomUUID());
-        person.setCreateDate(Instant.now());
+        person.setCreateDate(Timestamp.from(Instant.now()));
         return personDao.create(person).getUuid();
     }
 

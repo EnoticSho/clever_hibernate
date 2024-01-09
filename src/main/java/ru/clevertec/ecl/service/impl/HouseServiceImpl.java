@@ -13,6 +13,7 @@ import ru.clevertec.ecl.mapper.HouseMapper;
 import ru.clevertec.ecl.mapper.PersonMapper;
 import ru.clevertec.ecl.service.HouseService;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -51,7 +52,7 @@ public class HouseServiceImpl implements HouseService {
     public UUID create(HouseDto houseDto) {
         House house = houseMapper.toProduct(houseDto);
         house.setUuid(UUID.randomUUID());
-        house.setCreateDate(Instant.now());
+        house.setCreateDate(Timestamp.from(Instant.now()));
         return houseDao.create(house).getUuid();
     }
 

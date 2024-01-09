@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -55,8 +56,7 @@ public class House {
     private String number;
 
     @Column(name = "create_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Instant createDate;
+    private Timestamp createDate;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "HouseResidents",

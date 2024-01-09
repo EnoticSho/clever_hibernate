@@ -9,25 +9,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-import java.time.Instant;
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-@ToString
 @Table(name = "Person")
 @AllArgsConstructor
 @NoArgsConstructor
@@ -56,14 +50,12 @@ public class Person {
     private String passportNumber;
 
     @Column(name = "create_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Instant createDate;
+    private Timestamp createDate;
 
     @Column(name = "update_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Instant updateDate;
+    private Timestamp updateDate;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "houseowners",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "house_id"))
