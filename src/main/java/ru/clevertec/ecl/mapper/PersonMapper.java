@@ -12,8 +12,6 @@ public interface PersonMapper {
 
     Person toPerson(PersonDto personDto);
 
-    @Mapping(target = "createDate", source = "createDate", dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS")
-    @Mapping(target = "updateDate", source = "updateDate", dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     InfoPersonDto toInfoPersonDto(Person person);
 
     Person merge(@MappingTarget Person person, PersonDto personDto);

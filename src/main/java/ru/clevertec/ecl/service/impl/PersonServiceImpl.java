@@ -13,8 +13,6 @@ import ru.clevertec.ecl.mapper.HouseMapper;
 import ru.clevertec.ecl.mapper.PersonMapper;
 import ru.clevertec.ecl.service.PersonService;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +28,7 @@ public class PersonServiceImpl implements PersonService {
     public InfoPersonDto findById(UUID uuid) {
         return personDao.findByUuid(uuid)
                 .map(personMapper::toInfoPersonDto)
-                .orElseThrow(() -> new ResourceNotFoundException(uuid, InfoPersonDto.class));
+                .orElseThrow(() -> ResourceNotFoundException.of(uuid, InfoPersonDto.class));
     }
 
     @Override
@@ -43,17 +41,14 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public UUID update(UUID uuid, PersonDto personDto) {
         Person person = personDao.findByUuid(uuid)
-                .orElseThrow(() -> new ResourceNotFoundException(uuid, HouseInfoDto.class));
+                .orElseThrow(() -> ResourceNotFoundException.of(uuid, HouseInfoDto.class));
         Person merge = personMapper.merge(person, personDto);
-        person.setUpdateDate(Timestamp.from(Instant.now()));
         return personDao.update(merge).getUuid();
     }
 
     @Override
     public UUID create(PersonDto personDto) {
         Person person = personMapper.toPerson(personDto);
-        person.setUuid(UUID.randomUUID());
-        person.setCreateDate(Timestamp.from(Instant.now()));
         return personDao.create(person).getUuid();
     }
 
@@ -66,7 +61,7 @@ public class PersonServiceImpl implements PersonService {
     @Transactional
     public List<HouseInfoDto> findHousesByPersonId(UUID uuid) {
         Person person = personDao.findByUuid(uuid)
-                .orElseThrow(() -> new ResourceNotFoundException(uuid, Person.class));
+                .orElseThrow(() -> ResourceNotFoundException.of(uuid, Person.class));
         return person.getHouseList().stream()
                 .map(houseMapper::houseToHouseInfoDto)
                 .toList();

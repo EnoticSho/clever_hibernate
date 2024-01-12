@@ -3,6 +3,8 @@ package ru.clevertec.ecl.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.clevertec.ecl.entity.Passport;
+import ru.clevertec.ecl.enums.Sex;
 
 @Data
 @NoArgsConstructor
@@ -10,7 +12,6 @@ import lombok.NoArgsConstructor;
 public class PersonDto {
     private String name;
     private String surname;
-    private String sex;
-    private String passportSeries;
-    private String passportNumber;
+    private Sex sex;
+    private Passport passport;
 }

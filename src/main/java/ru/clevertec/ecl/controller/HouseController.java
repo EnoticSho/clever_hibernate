@@ -19,6 +19,11 @@ import ru.clevertec.ecl.service.HouseService;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Контроллер для управления домами в API.
+ * Этот класс обрабатывает HTTP-запросы, связанные с домами, и предоставляет методы для получения информации о домах,
+ * жителях домов, создания, обновления и удаления домов.
+ */
 @RestController
 @RequestMapping("/api/houses")
 @RequiredArgsConstructor
@@ -26,16 +31,35 @@ public class HouseController {
 
     private final HouseService houseService;
 
+    /**
+     * Обработчик HTTP GET-запроса для получения информации о доме по его уникальному идентификатору.
+     *
+     * @param uuid Уникальный идентификатор дома.
+     * @return ResponseEntity с информацией о доме в виде объекта HouseInfoDto.
+     */
     @GetMapping("/{uuid}")
     public ResponseEntity<HouseInfoDto> getHouse(@PathVariable UUID uuid) {
         return ResponseEntity.ok(houseService.findById(uuid));
     }
 
+    /**
+     * Обработчик HTTP GET-запроса для получения списка жителей дома по уникальному идентификатору дома.
+     *
+     * @param uuid Уникальный идентификатор дома.
+     * @return ResponseEntity со списком жителей в виде объектов InfoPersonDto.
+     */
     @GetMapping("/{uuid}/residents")
     public ResponseEntity<List<InfoPersonDto>> getHouseResidents(@PathVariable UUID uuid) {
         return ResponseEntity.ok(houseService.findResidentsByHouseId(uuid));
     }
 
+    /**
+     * Обработчик HTTP GET-запроса для получения списка всех домов с возможностью пагинации.
+     *
+     * @param page Номер страницы (необязательно).
+     * @param size Размер страницы (необязательно).
+     * @return ResponseEntity со списком информации о домах в виде объектов HouseInfoDto.
+     */
     @GetMapping
     public ResponseEntity<List<HouseInfoDto>> getAllHouses(
             @RequestParam(value = "page", required = false) Integer page,
@@ -47,16 +71,35 @@ public class HouseController {
         return ResponseEntity.ok(houseService.findAll(pageNumber, pageSize));
     }
 
+    /**
+     * Обработчик HTTP PUT-запроса для обновления информации о доме по его уникальному идентификатору.
+     *
+     * @param uuid     Уникальный идентификатор дома, который нужно обновить.
+     * @param houseDto Объект HouseDto с обновленной информацией о доме.
+     * @return ResponseEntity с уникальным идентификатором обновленного дома.
+     */
     @PutMapping("/{uuid}")
     public ResponseEntity<UUID> updateHouse(@PathVariable UUID uuid, @RequestBody HouseDto houseDto) {
         return ResponseEntity.ok(houseService.update(uuid, houseDto));
     }
 
+    /**
+     * Обработчик HTTP POST-запроса для создания нового дома с заданными данными.
+     *
+     * @param houseDto Объект HouseDto с данными для создания нового дома.
+     * @return ResponseEntity с уникальным идентификатором созданного дома.
+     */
     @PostMapping
     public ResponseEntity<UUID> createHouse(@RequestBody HouseDto houseDto) {
         return ResponseEntity.ok(houseService.create(houseDto));
     }
 
+    /**
+     * Обработчик HTTP DELETE-запроса для удаления дома по его уникальному идентификатору.
+     *
+     * @param uuid Уникальный идентификатор дома, который нужно удалить.
+     * @return ResponseEntity с кодом "204 No Content" после успешного удаления.
+     */
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Void> deleteHouse(@PathVariable UUID uuid) {
         houseService.delete(uuid);

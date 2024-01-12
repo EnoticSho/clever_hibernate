@@ -13,12 +13,24 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Реализация интерфейса PersonDao для взаимодействия с базой данных и сущностью Person.
+ * Этот класс предоставляет методы для выполнения операций CRUD (создание, чтение, обновление, удаление)
+ * с объектами Person в базе данных.
+ */
 @Repository
 public class PersonDaoImpl implements PersonDao {
 
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Получает список персон с возможностью пагинации.
+     *
+     * @param pageNumber Номер страницы для пагинации.
+     * @param pageSize   Размер страницы для пагинации.
+     * @return Список объектов Person, соответствующих заданным параметрам пагинации.
+     */
     @Override
     @Transactional(readOnly = true)
     public List<Person> findAll(int pageNumber, int pageSize) {
@@ -28,6 +40,12 @@ public class PersonDaoImpl implements PersonDao {
         return query.getResultList();
     }
 
+    /**
+     * Находит персону по её уникальному идентификатору (UUID).
+     *
+     * @param uuid Уникальный идентификатор персоны для поиска.
+     * @return Optional объект Person, если персона найдена, или пустой Optional, если персона не найдена.
+     */
     @Override
     @Transactional(readOnly = true)
     public Optional<Person> findByUuid(UUID uuid) {
@@ -40,6 +58,12 @@ public class PersonDaoImpl implements PersonDao {
         }
     }
 
+    /**
+     * Создает новую запись о персоне в базе данных.
+     *
+     * @param person Объект Person, который нужно создать.
+     * @return Созданный объект Person.
+     */
     @Override
     @Transactional
     public Person create(Person person) {
@@ -47,6 +71,12 @@ public class PersonDaoImpl implements PersonDao {
         return person;
     }
 
+    /**
+     * Обновляет запись о персоне в базе данных.
+     *
+     * @param person Объект Person, который нужно обновить.
+     * @return Обновленный объект Person.
+     */
     @Override
     @Transactional
     public Person update(Person person) {
@@ -54,11 +84,16 @@ public class PersonDaoImpl implements PersonDao {
         return person;
     }
 
+    /**
+     * Удаляет запись о персоне из базы данных по её уникальному идентификатору.
+     *
+     * @param uuid Уникальный идентификатор персоны, который нужно удалить.
+     */
     @Override
     @Transactional
     public void delete(UUID uuid) {
         Person person = findByUuid(uuid)
-                .orElseThrow(() -> new ResourceNotFoundException(uuid, Person.class));
+                .orElseThrow(() -> ResourceNotFoundException.of(uuid, Person.class));
         entityManager.remove(person);
     }
 }

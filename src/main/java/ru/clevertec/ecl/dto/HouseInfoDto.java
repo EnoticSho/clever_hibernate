@@ -18,6 +18,7 @@ public class HouseInfoDto {
     private String city;
     private String street;
     private String number;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT")
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss:SSS")
     private Timestamp createDate;
 }

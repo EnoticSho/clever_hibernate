@@ -3,4 +3,4 @@ database:
   password: root
   url: jdbc:postgresql://localhost:5432/database
   driver-class-name: org.postgresql.Driver
-  sql-path: db/db-changelog.sql
+  sql-path: db/db.changelog-master.yml

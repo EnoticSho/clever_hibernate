@@ -5,14 +5,17 @@ import lombok.Getter;
 import java.util.UUID;
 
 @Getter
-public class ResourceNotFoundException extends RuntimeException{
+public class ResourceNotFoundException extends RuntimeException {
 
-    private final UUID resourceId;
-    private final Class<?> resourceType;
+    private final String message;
 
-    public ResourceNotFoundException(UUID resourceId, Class<?> resourceType) {
-        super(String.format("%s with uuid: %s not found", resourceType.getSimpleName(), resourceId));
-        this.resourceId = resourceId;
-        this.resourceType = resourceType;
+    public ResourceNotFoundException(String message) {
+        super(message);
+        this.message = message;
+    }
+
+    public static ResourceNotFoundException of(UUID resourceId, Class<?> resourceType) {
+        String message = String.format("%s with uuid: %s not found", resourceType.getSimpleName(), resourceId);
+        return new ResourceNotFoundException(message);
     }
 }

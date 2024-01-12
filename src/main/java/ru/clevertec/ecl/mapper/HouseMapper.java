@@ -9,9 +9,9 @@ import ru.clevertec.ecl.entity.House;
 
 @Mapper
 public interface HouseMapper {
+
     House toProduct(HouseDto houseDto);
 
-    @Mapping(target = "createDate", source = "createDate", dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS")
     HouseInfoDto houseToHouseInfoDto(House house);
 
     House merge(@MappingTarget House house, HouseDto houseDto);
