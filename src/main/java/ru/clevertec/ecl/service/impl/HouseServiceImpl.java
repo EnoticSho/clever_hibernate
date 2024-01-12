@@ -13,7 +13,9 @@ import ru.clevertec.ecl.mapper.HouseMapper;
 import ru.clevertec.ecl.mapper.PersonMapper;
 import ru.clevertec.ecl.service.HouseService;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -109,5 +111,21 @@ public class HouseServiceImpl implements HouseService {
         return house.getResidents().stream()
                 .map(personMapper::toInfoPersonDto)
                 .toList();
+    }
+
+    @Override
+    public UUID updateHouseByField(UUID uuid, Map<String, Object> updates) {
+        House house = houseDao.findByUuid(uuid)
+                .orElseThrow(() -> ResourceNotFoundException.of(uuid, House.class));
+        updates.forEach((key, value) -> {
+            try {
+                Field field = House.class.getDeclaredField(key);
+                field.setAccessible(true);
+                field.set(house, value);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return houseDao.update(house).getUuid();
     }
 }

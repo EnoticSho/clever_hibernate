@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -17,6 +18,7 @@ import ru.clevertec.ecl.dto.InfoPersonDto;
 import ru.clevertec.ecl.service.HouseService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -81,6 +83,11 @@ public class HouseController {
     @PutMapping("/{uuid}")
     public ResponseEntity<UUID> updateHouse(@PathVariable UUID uuid, @RequestBody HouseDto houseDto) {
         return ResponseEntity.ok(houseService.update(uuid, houseDto));
+    }
+
+    @PatchMapping("/{uuid}")
+    public ResponseEntity<UUID> updateHouse(@PathVariable UUID uuid, @RequestBody Map<String, Object> updates) {
+        return ResponseEntity.ok(houseService.updateHouseByField(uuid, updates));
     }
 
     /**
