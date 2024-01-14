@@ -1,4 +1,4 @@
-package ru.clevertec.ecl.dto;
+package ru.clevertec.ecl.exception;
 
 import lombok.Getter;
 import lombok.Setter;

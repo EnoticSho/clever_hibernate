@@ -6,11 +6,9 @@ import ru.clevertec.ecl.entity.Person;
 
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class PersonListener {
-
 
     @PrePersist
     protected void onCreate(Person person) {

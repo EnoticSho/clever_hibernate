@@ -5,7 +5,9 @@ import lombok.Data;
 import ru.clevertec.ecl.dto.InfoPersonDto;
 import ru.clevertec.ecl.dto.PersonDto;
 import ru.clevertec.ecl.entity.House;
+import ru.clevertec.ecl.entity.Passport;
 import ru.clevertec.ecl.entity.Person;
+import ru.clevertec.ecl.enums.Sex;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -29,13 +31,10 @@ public class PersonTestData {
     private String surname = "Иванов";
 
     @Builder.Default
-    private String sex = "Male";
+    private Sex sex = Sex.FEMALE;
 
     @Builder.Default
-    private String passportSeries = "AB";
-
-    @Builder.Default
-    private String passportNumber = "123456";
+    private Passport passport = new Passport("AK", "12355");
 
     @Builder.Default
     private Timestamp createDate = Timestamp.valueOf(LocalDateTime.of(2023, 10, 15, 12, 34));
@@ -44,17 +43,20 @@ public class PersonTestData {
     private Timestamp updateDate = Timestamp.valueOf(LocalDateTime.of(2023, 10, 15, 12, 34));
 
     @Builder.Default
-    private List<House> houseList = List.of(new House());
+    private List<House> houseList = List.of(House.builder()
+            .id(1L)
+            .country("Belarus")
+            .build());
 
     public InfoPersonDto buildPersonInfo() {
-        return new InfoPersonDto(uuid, name, surname, sex, passportSeries, passportNumber, createDate, updateDate);
+        return new InfoPersonDto(uuid, name, surname, sex, passport, createDate, updateDate);
     }
 
     public PersonDto buildPersonDto() {
-        return new PersonDto(name, surname, sex, passportSeries, passportNumber);
+        return new PersonDto(name, surname, sex, passport);
     }
 
     public Person buildPerson() {
-        return new Person(id, uuid, name, surname, sex, passportSeries, passportNumber, createDate, updateDate, houseList);
+        return new Person(id, uuid, name, surname, sex, passport, createDate, updateDate, houseList);
     }
 }

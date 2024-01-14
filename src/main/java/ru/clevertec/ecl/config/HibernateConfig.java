@@ -36,17 +36,6 @@ public class HibernateConfig {
     }
 
     /**
-     * Возвращает настройки Hibernate, включая параметр "hibernate.show_sql", установленный в "true" для отображения SQL-запросов в логах.
-     *
-     * @return Настройки Hibernate.
-     */
-    private Properties hibernateProperties() {
-        Properties properties = new Properties();
-        properties.put("hibernate.show_sql", "true");
-        return properties;
-    }
-
-    /**
      * Создает и настраивает менеджер транзакций Hibernate для управления транзакциями в приложении.
      * Ассоциирует менеджер транзакций с фабрикой сессий Hibernate.
      *
@@ -58,5 +47,16 @@ public class HibernateConfig {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         transactionManager.setSessionFactory(sessionFactory(dataSource).getObject());
         return transactionManager;
+    }
+
+    /**
+     * Возвращает настройки Hibernate, включая параметр "hibernate.show_sql", установленный в "true" для отображения SQL-запросов в логах.
+     *
+     * @return Настройки Hibernate.
+     */
+    private Properties hibernateProperties() {
+        Properties properties = new Properties();
+        properties.put("hibernate.show_sql", "true");
+        return properties;
     }
 }

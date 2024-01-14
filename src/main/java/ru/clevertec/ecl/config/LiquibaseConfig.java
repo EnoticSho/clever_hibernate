@@ -14,7 +14,7 @@ import javax.sql.DataSource;
  */
 @Configuration
 @ComponentScan(basePackages = "ru.clevertec.ecl")
-public class liquibaseConfig {
+public class LiquibaseConfig {
 
     @Value("${database.sql-path}")
     private String sqlPathKey;

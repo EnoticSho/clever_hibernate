@@ -85,6 +85,13 @@ public class HouseController {
         return ResponseEntity.ok(houseService.update(uuid, houseDto));
     }
 
+    /**
+     * Обработчик HTTP PATCH-запроса для частичного обновления информации о доме по его уникальному идентификатору.
+     *
+     * @param uuid     Уникальный идентификатор дома, который нужно обновить.
+     * @param updates  Map с обновлениями, представленными в виде пар "имя поля" - "новое значение".
+     * @return ResponseEntity с уникальным идентификатором обновленного дома.
+     */
     @PatchMapping("/{uuid}")
     public ResponseEntity<UUID> updateHouse(@PathVariable UUID uuid, @RequestBody Map<String, Object> updates) {
         return ResponseEntity.ok(houseService.updateHouseByField(uuid, updates));

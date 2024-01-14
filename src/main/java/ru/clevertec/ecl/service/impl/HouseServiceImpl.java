@@ -1,5 +1,6 @@
 package ru.clevertec.ecl.service.impl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,7 +68,7 @@ public class HouseServiceImpl implements HouseService {
      * @throws ResourceNotFoundException Если дом с заданным UUID не найден, генерируется исключение ResourceNotFoundException.
      */
     @Override
-    public UUID update(UUID uuid, HouseDto houseDto) {
+    public UUID update(UUID uuid,@Valid HouseDto houseDto) {
         House house = houseDao.findByUuid(uuid)
                 .orElseThrow(() -> ResourceNotFoundException.of(uuid, House.class));
         House merge = houseMapper.merge(house, houseDto);
@@ -81,7 +82,7 @@ public class HouseServiceImpl implements HouseService {
      * @return Уникальный идентификатор созданного дома.
      */
     @Override
-    public UUID create(HouseDto houseDto) {
+    public UUID create(@Valid HouseDto houseDto) {
         House house = houseMapper.toProduct(houseDto);
         return houseDao.create(house).getUuid();
     }
@@ -113,6 +114,13 @@ public class HouseServiceImpl implements HouseService {
                 .toList();
     }
 
+    /**
+     * Получает информацию о жителях дома с заданным UUID.
+     *
+     * @param uuid Уникальный идентификатор дома, для которого нужно получить информацию о жителях.
+     * @return Список объектов InfoPersonDto с информацией о жителях дома.
+     * @throws ResourceNotFoundException Если дом с заданным UUID не найден, генерируется исключение ResourceNotFoundException.
+     */
     @Override
     public UUID updateHouseByField(UUID uuid, Map<String, Object> updates) {
         House house = houseDao.findByUuid(uuid)

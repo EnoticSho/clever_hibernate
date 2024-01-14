@@ -6,6 +6,7 @@ import ru.clevertec.ecl.dto.HouseDto;
 import ru.clevertec.ecl.dto.HouseInfoDto;
 import ru.clevertec.ecl.entity.House;
 import ru.clevertec.ecl.entity.Person;
+import ru.clevertec.ecl.enums.Sex;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -41,7 +42,11 @@ public class HouseTestData {
     private Timestamp createDate = Timestamp.valueOf(LocalDateTime.of(2023, 10, 15, 12, 34));
 
     @Builder.Default
-    private List<Person> residents = List.of(new Person());
+    private List<Person> residents = List.of(Person.builder()
+            .id(1L)
+            .name("Alex")
+            .sex(Sex.MALE)
+            .build());
 
     public HouseInfoDto buildHouseInfo() {
         return new HouseInfoDto(uuid, area, country, city, street, number, createDate);

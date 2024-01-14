@@ -3,11 +3,14 @@ package ru.clevertec.ecl.dao.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.ecl.dao.HouseDao;
+import ru.clevertec.ecl.dao.rowmapper.HouseRowMapper;
 import ru.clevertec.ecl.entity.House;
 import ru.clevertec.ecl.exception.ResourceNotFoundException;
 
@@ -21,13 +24,14 @@ import java.util.UUID;
  * с объектами House в базе данных.
  */
 @Repository
+@RequiredArgsConstructor
 public class HouseDaoImpl implements HouseDao {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
+    private final HouseRowMapper houseRowMapper;
 
     /**
      * Реализация интерфейса HouseDao для взаимодействия с базой данных и сущностью House.
@@ -53,10 +57,9 @@ public class HouseDaoImpl implements HouseDao {
     @Transactional(readOnly = true)
     public Optional<House> findByUuid(UUID uuid) {
         try {
-            return Optional.ofNullable(entityManager.createQuery("SELECT h FROM House h WHERE h.uuid = :uuid", House.class)
-                    .setParameter("uuid", uuid)
-                    .getSingleResult());
-        } catch (jakarta.persistence.NoResultException e) {
+            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM House h WHERE h.uuid = ?", houseRowMapper, uuid));
+
+        } catch (EmptyResultDataAccessException e) {
             return Optional.empty();
         }
     }
@@ -70,16 +73,7 @@ public class HouseDaoImpl implements HouseDao {
     @Override
     @Transactional
     public House create(House house) {
-        String sql = "INSERT INTO House (uuid, area, country, city, street, number, create_date) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                house.getUuid(),
-                house.getArea(),
-                house.getCountry(),
-                house.getCity(),
-                house.getStreet(),
-                house.getNumber(),
-                house.getCreateDate()
-        );
+        entityManager.persist(house);
         return house;
     }
 
