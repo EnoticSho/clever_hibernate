@@ -39,15 +39,4 @@ public class SpringConfig {
     public PersonMapper personMapper() {
         return new PersonMapperImpl();
     }
-
-
-//    @Bean
-//    public GenericDaoImpl<House> houseDao() {
-//        return new GenericDaoImpl<>(House.class);
-//    }
-//
-//    @Bean
-//    public GenericDaoImpl<Person> personDao() {
-//        return new GenericDaoImpl<>(Person.class);
-//    }
 }

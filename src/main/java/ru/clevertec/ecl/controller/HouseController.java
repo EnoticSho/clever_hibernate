@@ -117,6 +117,7 @@ public class HouseController {
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Void> deleteHouse(@PathVariable UUID uuid) {
         houseService.delete(uuid);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent()
+                .build();
     }
 }

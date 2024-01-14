@@ -75,8 +75,10 @@ class PersonServiceImplTest {
     @Test
     void testFindByIdNotFound() {
         // Given
-        UUID testUuid = UUID.randomUUID();
-        when(personDao.findByUuid(testUuid)).thenReturn(Optional.empty());
+        UUID testUuid = UUID.fromString("c249fc5b-4a25-4212-83ca-2c6ec0d57d0b");
+
+        when(personDao.findByUuid(testUuid))
+                .thenReturn(Optional.empty());
 
         // When & Then
         assertThrows(ResourceNotFoundException.class, () -> personService.findById(testUuid));
