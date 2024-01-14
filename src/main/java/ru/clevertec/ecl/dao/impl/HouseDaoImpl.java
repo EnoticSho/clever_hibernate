@@ -4,13 +4,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.ecl.dao.HouseDao;
-import ru.clevertec.ecl.dao.rowmapper.HouseRowMapper;
 import ru.clevertec.ecl.entity.House;
 import ru.clevertec.ecl.exception.ResourceNotFoundException;
 
@@ -31,7 +28,6 @@ public class HouseDaoImpl implements HouseDao {
     private EntityManager entityManager;
 
     private final JdbcTemplate jdbcTemplate;
-    private final HouseRowMapper houseRowMapper;
 
     /**
      * Реализация интерфейса HouseDao для взаимодействия с базой данных и сущностью House.
@@ -57,9 +53,10 @@ public class HouseDaoImpl implements HouseDao {
     @Transactional(readOnly = true)
     public Optional<House> findByUuid(UUID uuid) {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM House h WHERE h.uuid = ?", houseRowMapper, uuid));
-
-        } catch (EmptyResultDataAccessException e) {
+            return Optional.ofNullable(entityManager.createQuery("SELECT h FROM House h WHERE h.uuid = :uuid", House.class)
+                    .setParameter("uuid", uuid)
+                    .getSingleResult());
+        } catch (jakarta.persistence.NoResultException e) {
             return Optional.empty();
         }
     }
@@ -100,6 +97,8 @@ public class HouseDaoImpl implements HouseDao {
     public void delete(UUID uuid) {
         House house = findByUuid(uuid)
                 .orElseThrow(() -> ResourceNotFoundException.of(uuid, House.class));
-        entityManager.remove(house);
+
+        String sqlDeleteHouse = "DELETE FROM House WHERE uuid = ?";
+        jdbcTemplate.update(sqlDeleteHouse, uuid);
     }
 }

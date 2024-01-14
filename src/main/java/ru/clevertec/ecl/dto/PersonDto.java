@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import ru.clevertec.ecl.entity.Passport;
 import ru.clevertec.ecl.enums.Sex;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,4 +29,6 @@ public class PersonDto {
 
     @NotNull
     private Passport passport;
+
+    private List<HouseInfoDto> houseList;
 }

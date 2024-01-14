@@ -31,8 +31,8 @@ CREATE TABLE HouseOwners
     house_id  INT,
     person_id INT,
     PRIMARY KEY (house_id, person_id),
-    FOREIGN KEY (house_id) REFERENCES House (id),
-    FOREIGN KEY (person_id) REFERENCES Person (id)
+    FOREIGN KEY (house_id) REFERENCES House (id) ON DELETE CASCADE,
+    FOREIGN KEY (person_id) REFERENCES Person (id) ON DELETE CASCADE
 );
 
 CREATE TABLE HouseResidents
@@ -40,6 +40,6 @@ CREATE TABLE HouseResidents
     house_id  INT,
     person_id INT,
     PRIMARY KEY (house_id, person_id),
-    FOREIGN KEY (house_id) REFERENCES House (id),
-    FOREIGN KEY (person_id) REFERENCES Person (id)
+    FOREIGN KEY (house_id) REFERENCES House (id) ON DELETE CASCADE,
+    FOREIGN KEY (person_id) REFERENCES Person (id) ON DELETE CASCADE
 );

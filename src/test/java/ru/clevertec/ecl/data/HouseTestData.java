@@ -53,7 +53,7 @@ public class HouseTestData {
     }
 
     public HouseDto buildHouseDto() {
-        return new HouseDto(area, country, city, street, number);
+        return new HouseDto(area, country, city, street, number, List.of());
     }
 
     public House buildHouse() {

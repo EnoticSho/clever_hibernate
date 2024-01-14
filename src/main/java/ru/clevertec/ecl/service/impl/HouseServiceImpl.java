@@ -39,6 +39,7 @@ public class HouseServiceImpl implements HouseService {
      * @throws ResourceNotFoundException Если дом с заданным UUID не найден, генерируется исключение ResourceNotFoundException.
      */
     @Override
+    @Transactional
     public HouseInfoDto findById(UUID uuid) {
         return houseDao.findByUuid(uuid)
                 .map(houseMapper::houseToHouseInfoDto)
@@ -53,6 +54,7 @@ public class HouseServiceImpl implements HouseService {
      * @return Список объектов HouseInfoDto, соответствующих заданным параметрам пагинации.
      */
     @Override
+    @Transactional
     public List<HouseInfoDto> findAll(int pageNumber, int pageSize) {
         return houseDao.findAll(pageNumber, pageSize).stream()
                 .map(houseMapper::houseToHouseInfoDto)

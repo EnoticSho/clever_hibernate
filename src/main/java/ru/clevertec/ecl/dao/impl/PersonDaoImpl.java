@@ -3,6 +3,7 @@ package ru.clevertec.ecl.dao.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.clevertec.ecl.dao.PersonDao;
@@ -19,6 +20,7 @@ import java.util.UUID;
  * с объектами Person в базе данных.
  */
 @Repository
+@RequiredArgsConstructor
 public class PersonDaoImpl implements PersonDao {
 
     @PersistenceContext

@@ -33,6 +33,7 @@ public class PersonServiceImpl implements PersonService {
      * @throws ResourceNotFoundException Если житель с заданным UUID не найден, генерируется исключение ResourceNotFoundException.
      */
     @Override
+    @Transactional
     public InfoPersonDto findById(UUID uuid) {
         return personDao.findByUuid(uuid)
                 .map(personMapper::toInfoPersonDto)
@@ -47,6 +48,7 @@ public class PersonServiceImpl implements PersonService {
      * @return Список объектов InfoPersonDto с информацией о жителях на указанной странице.
      */
     @Override
+    @Transactional
     public List<InfoPersonDto> findAll(int pageNumber, int pageSize) {
         return personDao.findAll(pageNumber, pageSize).stream()
                 .map(personMapper::toInfoPersonDto)
